@@ -1,0 +1,21 @@
+---
+- name: Setup development environment
+  hosts: localhost
+  connection: local
+  become: yes
+  tasks:
+    - name: Include update tasks
+      ansible.builtin.include_tasks: tasks/update.yml
+      tags: update
+
+    - name: Include zsh setup tasks
+      ansible.builtin.include_tasks: tasks/zsh.yml
+      tags: zsh
+
+    - name: Include git setup tasks
+      ansible.builtin.include_tasks: tasks/git.yml
+      tags: git
+
+    - name: Include node setup tasks
+      ansible.builtin.include_tasks: tasks/node.yml
+      tags: node

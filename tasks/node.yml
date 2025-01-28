@@ -1,0 +1,56 @@
+---
+- name: Install system dependencies for nvm
+  become: true
+  ansible.builtin.package:
+    name:
+      - curl
+    state: present
+  tags:
+    - node
+
+- name: Install nvm
+  become: false
+  ansible.builtin.shell:
+    cmd: |
+      curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+      echo 'export NVM_DIR="$HOME/.nvm"' >> ~/.zshrc
+      echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> ~/.zshrc
+    creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
+  args:
+    executable: /bin/bash
+  tags:
+    - node
+
+- name: Install Node.js LTS
+  become: false
+  ansible.builtin.shell:
+    cmd: |
+      source ~/.nvm/nvm.sh
+      nvm install --lts
+      nvm use --lts
+  environment:
+    NVM_DIR: "{{ ansible_env.HOME }}/.nvm"
+  args:
+    executable: /bin/zsh
+  tags:
+    - node
+
+- name: Install pnpm
+  become: false
+  ansible.builtin.shell:
+    cmd: curl -fsSL https://get.pnpm.io/install.sh | sh -
+    creates: "{{ ansible_env.HOME }}/.local/share/pnpm"
+  args:
+    executable: /bin/zsh
+  tags:
+    - node
+
+- name: Install bun
+  become: false
+  ansible.builtin.shell:
+    cmd: curl -fsSL https://bun.sh/install | bash
+    creates: "{{ ansible_env.HOME }}/.bun"
+  args:
+    executable: /bin/zsh
+  tags:
+    - node

@@ -1,0 +1,43 @@
+---
+- name: Install zsh
+  become: true
+  ansible.builtin.package:
+    name: zsh
+    state: present
+  tags:
+    - zsh
+
+- name: Set zsh as default shell
+  ansible.builtin.user:
+    name: "{{ ansible_user_id }}"
+    shell: /bin/zsh
+  tags:
+    - zsh
+
+- name: Install oh-my-zsh
+  become: false
+  ansible.builtin.shell:
+    cmd: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    creates: "~/.oh-my-zsh"
+  tags:
+    - zsh
+
+- name: Install zsh-autosuggestions
+  become: false
+  ansible.builtin.shell:
+  ansible.builtin.git:
+    repo: "https://github.com/zsh-users/zsh-autosuggestions"
+    dest: "~/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+    depth: 1
+  tags:
+    - zsh
+
+- name: Install zsh-syntax-highlighting
+  become: false
+  ansible.builtin.shell:
+  ansible.builtin.git:
+    repo: "https://github.com/zsh-users/zsh-syntax-highlighting"
+    dest: "~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+    depth: 1
+  tags:
+    - zsh
