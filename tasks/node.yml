@@ -9,7 +9,6 @@
     - node
 
 - name: Install nvm
-  become: false
   ansible.builtin.shell:
     cmd: |
       curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
@@ -22,7 +21,6 @@
     - node
 
 - name: Install Node.js LTS
-  become: false
   ansible.builtin.shell:
     cmd: |
       source ~/.nvm/nvm.sh
@@ -36,7 +34,6 @@
     - node
 
 - name: Install pnpm
-  become: false
   ansible.builtin.shell:
     cmd: curl -fsSL https://get.pnpm.io/install.sh | sh -
     creates: "{{ ansible_env.HOME }}/.local/share/pnpm"
@@ -46,7 +43,6 @@
     - node
 
 - name: Install bun
-  become: false
   ansible.builtin.shell:
     cmd: curl -fsSL https://bun.sh/install | bash
     creates: "{{ ansible_env.HOME }}/.bun"
